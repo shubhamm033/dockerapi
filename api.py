@@ -13,7 +13,6 @@ mongo = MongoClient(uri)
 
 
 
-mongo=MongoClient()
 
 
 
