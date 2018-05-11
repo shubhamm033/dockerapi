@@ -1,14 +1,25 @@
 from flask import Flask, jsonify, url_for, redirect, request
-from flask_pymongo import PyMongo
+from flask_pymongo import MongoClient 
 from flask_restful import Api, Resource
+from flask_cors import CORS,cross_origin
+import os
 
 app = Flask(__name__)
-app.config["MONGO_DBNAME"] = "students_db"
-mongo = PyMongo(app, config_prefix='MONGO')
-APP_URL = "http://127.0.0.1:5000"
+mongo_ip = "172.17.0.2"
+
+mongo_port = 27017
+uri  = "mongodb://" + mongo_ip + ":" + str(mongo_port)+"/"
+mongo = MongoClient(uri)
+
+
+
+mongo=MongoClient()
+
 
 
 class Student(Resource):
+    
+    @cross_origin()
     def get(self, registration=None, department=None):
         data = []
 
@@ -76,4 +87,6 @@ api.add_resource(Student, "/api/<string:registration>", endpoint="registration")
 api.add_resource(Student, "/api/department/<string:department>", endpoint="department")
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    
+    app.run(host='0.0.0.0')
+    
